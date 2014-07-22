@@ -17,6 +17,8 @@ def every_5_seconds
 end
 
 def check_internet
+	primary_internet = '68.190.186.130'
+	backup_internet = '66.224.72.122'
 	hub_ip = '192.168.16.155'
 	username = '2b1c0c93ae079efd83b8b19a6d67'
 	api_path = 'http://' + hub_ip + '/api/' + username
@@ -29,7 +31,12 @@ def check_internet
 	request = Net::Ping::HTTP.new(default)
 	if request.ping
 		if request.duration < 1
-			RestClient.put api_path + '/lights/3/state', {:on => true, :hue => green, :bri => 200}.to_json, :content_type => :json, :accept => :json
+			public_ip = RestClient.get 'http://whatismyip.akamai.com'
+			if public_ip == primary_internet
+				RestClient.put api_path + '/lights/3/state', {:on => true, :hue => green, :bri => 200}.to_json, :content_type => :json, :accept => :json
+			else
+				RestClient.put api_path + '/lights/3/state', {:on => true, :hue => yellow, :bri => 200}.to_json, :content_type => :json, :accept => :json
+			end
 		else
 			RestClient.put api_path + '/lights/3/state', {:on => true, :hue => red, :bri => 200}.to_json, :content_type => :json, :accept => :json
 		end
