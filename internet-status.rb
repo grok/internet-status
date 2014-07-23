@@ -23,6 +23,8 @@ def check_internet
 	api_path = 'http://' + hub_ip + '/api/' + username
 	default = 'http://google.com'
 
+	on = false
+	hue = red
 	yellow = 20000 # Back up internet.
 	green = 25500 # Primary internet and speeds are OK
 	red = 0 # Slow speeds -- regardless of ISP
@@ -31,17 +33,20 @@ def check_internet
 	if request.ping
 		if request.duration < 1
 			public_ip = RestClient.get 'http://whatismyip.akamai.com'
+			on = true
 			if public_ip == primary_internet
-				RestClient.put api_path + '/lights/' + lightbulb_id + '/state', {:on => true, :hue => green, :bri => 200}.to_json, :content_type => :json, :accept => :json
+				hue = green
 			else
-				RestClient.put api_path + '/lights/' + lightbulb_id + '/state', {:on => true, :hue => yellow, :bri => 200}.to_json, :content_type => :json, :accept => :json
+				hue = yellow
 			end
 		else
-			RestClient.put api_path + '/lights/' + lightbulb_id + '/state', {:on => true, :hue => red, :bri => 200}.to_json, :content_type => :json, :accept => :json
+			hue = red
 		end
+			on = false
 	else
-		RestClient.put api_path + '/lights/' + lightbulb_id + '/state', :on => 'false'
+
 	end
+	RestClient.put api_path + '/lights/' + lightbulb_id + '/state', {:on => on, :hue => hue, :bri => 200}.to_json, :content_type => :json, :accept => :json
 end
 
 every_5_seconds { check_internet }
