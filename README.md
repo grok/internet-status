@@ -14,6 +14,12 @@
 
 It's really easy. The code base is small. The time put into this was minimal. Overall cost was probably just under $200.00. Time was like... 15 minutes.
 
+Useful resources:
+
+* Hue docs: http://developers.meethue.com/index.html
+* Hub IP: https://www.meethue.com/api/nupnp
+* http://YOURIP/debug/clip.html
+
 ## Context
 
 Ok, me and the guys were rambling one day -- the internet was slow. Then it was down. Then it was slow. Then for 5 seconds it was cool. Then it went down again.
