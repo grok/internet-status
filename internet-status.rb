@@ -3,8 +3,6 @@ require 'rest_client'
 require 'net/http'
 require 'net/ping/http'
 
-# @TODO: Check which ISP we are using.
-
 def every_5_seconds
 		last = Time.now
 		while true
@@ -17,6 +15,7 @@ def every_5_seconds
 end
 
 def check_internet
+	lightbulb_id = 3
 	primary_internet = '68.190.186.130'
 	backup_internet = '66.224.72.122'
 	hub_ip = '192.168.16.155'
@@ -33,15 +32,15 @@ def check_internet
 		if request.duration < 1
 			public_ip = RestClient.get 'http://whatismyip.akamai.com'
 			if public_ip == primary_internet
-				RestClient.put api_path + '/lights/3/state', {:on => true, :hue => green, :bri => 200}.to_json, :content_type => :json, :accept => :json
+				RestClient.put api_path + '/lights/' + lightbulb_id + '/state', {:on => true, :hue => green, :bri => 200}.to_json, :content_type => :json, :accept => :json
 			else
-				RestClient.put api_path + '/lights/3/state', {:on => true, :hue => yellow, :bri => 200}.to_json, :content_type => :json, :accept => :json
+				RestClient.put api_path + '/lights/' + lightbulb_id + '/state', {:on => true, :hue => yellow, :bri => 200}.to_json, :content_type => :json, :accept => :json
 			end
 		else
-			RestClient.put api_path + '/lights/3/state', {:on => true, :hue => red, :bri => 200}.to_json, :content_type => :json, :accept => :json
+			RestClient.put api_path + '/lights/' + lightbulb_id + '/state', {:on => true, :hue => red, :bri => 200}.to_json, :content_type => :json, :accept => :json
 		end
 	else
-		RestClient.put api_path + '/lights/3/state', :on => 'false'
+		RestClient.put api_path + '/lights/' + lightbulb_id + '/state', :on => 'false'
 	end
 end
 
