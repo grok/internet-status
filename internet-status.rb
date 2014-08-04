@@ -50,7 +50,7 @@ def check_internet
 		on = false
 	end
 
-	RestClient.put api_path + '/lights/' + lightbulb_id + '/state', {:on => on, :hue => hue, :bri => 80, :sat => 255}.to_json, :content_type => :json, :accept => :json
+	RestClient.put api_path + '/lights/' + lightbulb_id + '/state', {:on => on, :hue => hue, :bri => 80, :sat => 255, :alert => 'select'}.to_json, :content_type => :json, :accept => :json
 
 end
 
