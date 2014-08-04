@@ -54,4 +54,8 @@ def check_internet
 
 end
 
-every_10_seconds { check_internet }
+begin
+	every_10_seconds { check_internet }
+rescue => msg
+	puts "#{Time.now}	ERROR"
+end
